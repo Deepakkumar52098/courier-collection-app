@@ -1,65 +1,41 @@
-const express = require("express");
-const cors = require("cors");
-const { Pool } = require("pg");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import pool from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
+import packagesRoutes from "./routes/packagesRoutes.js";
+import errorHandling from "./middlewares/errorHandler.js";
+import initializeDB from "./config/initializeDB.js";
+
+dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const port = process.env.SERVER_PORT;
+
+//middlewares
 app.use(express.json());
+app.use(cors());
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+//routes
 
-const initializeDb = async () => {
+app.use("/services/auth", userRoutes);
+app.use("/services/packages", packagesRoutes);
+
+//error handling
+app.use(errorHandling);
+
+const startServer = async () => {
   try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100),
-        emailId VARCHAR(100),
-        password TEXT,
-        role VARCHAR(100)
-      )
-    `);
+    await initializeDB();
 
-    const result = await pool.query("SELECT * FROM users");
-
-    if (result.rows.length === 0) {
-      await pool.query(
-        `
-        INSERT INTO users(name, emailId, password, role)
-        VALUES ($1, $2, $3, $4)
-      `,
-        ["Test", "test@gmail.com", "test", "executive"],
-      );
-    }
-
-    console.log("Database initialized");
+    app.listen(port, () => {
+      console.log("Database connected & server running");
+    });
   } catch (err) {
-    console.error(err);
+    console.error("Server startup failed");
+    process.exit(1);
   }
 };
 
-app.get("/users", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM users");
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      message: "Database error",
-    });
-  }
-});
-
-initializeDb().then(() => {
-  app.listen(3000, () => {
-    console.log("Server running on port 3000");
-  });
-});
+startServer();
