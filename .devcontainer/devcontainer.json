@@ -1,0 +1,24 @@
+{
+  "name": "courier-hub-app",
+
+  "dockerComposeFile": "../docker-compose.yml",
+
+  "service": "app",
+
+  "workspaceFolder": "/workspace",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+
+  "forwardPorts": [3000, 5173, 5432],
+
+  "postCreateCommand": "cd courier-hub-ui && npm install && cd ../courier-hub-api && npm install"
+}
+
