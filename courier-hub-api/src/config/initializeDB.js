@@ -5,8 +5,10 @@ import pool from "./db.js";
 
 const initializeDB = async () => {
   try {
+    // await pool.query(`DROP TABLE IF EXISTS packages`);
+    // await pool.query(`DROP TABLE IF EXISTS users`);
 
-    await createPackageStatusEnum();
+    // await createPackageStatusEnum();
 
     await createUserTable();
 

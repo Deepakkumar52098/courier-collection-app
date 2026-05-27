@@ -3,13 +3,20 @@ import pool from "../config/db.js";
 export const createPackages = async (packagesData, packageId, trackingId) => {
   const {
     senderName,
-    senderPhoneNumber,
+    senderPhone,
     senderAddress,
+    senderState,
+    senderCity,
+    senderPincode,
     receiverName,
-    receiverPhoneNumber,
+    receiverPhone,
     receiverAddress,
+    receiverState,
+    receiverCity,
+    receiverPincode,
     weight,
-    currentRegion,
+    region,
+    packageType,
   } = packagesData;
 
   const result = await pool.query(
@@ -17,26 +24,40 @@ export const createPackages = async (packagesData, packageId, trackingId) => {
     id,
     tracking_id,
     sender_name,
-    sender_phone_number,
+    sender_phone,
     sender_address,
+    sender_state,
+    sender_city,
+    sender_pincode,
     receiver_name,
-    receiver_phone_number,
+    receiver_phone,
     receiver_address,
+    receiver_state,
+    receiver_city,
+    receiver_pincode,
     weight,
-    current_region
-  ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+    region,
+    package_type
+  ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
   RETURNING *`,
     [
       packageId,
       trackingId,
       senderName,
-      senderPhoneNumber,
+      senderPhone,
       senderAddress,
+      senderState,
+      senderCity,
+      senderPincode,
       receiverName,
-      receiverPhoneNumber,
+      receiverPhone,
       receiverAddress,
+      receiverState,
+      receiverCity,
+      receiverPincode,
       weight,
-      currentRegion,
+      region,
+      packageType
     ],
   );
   return result.rows[0];
