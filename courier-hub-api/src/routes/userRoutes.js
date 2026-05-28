@@ -3,15 +3,15 @@ import {
   createUserService,
   deleteUserByIdService,
   getAllUsersService,
-  getUserByIdService,
+  getUserByEmailIdService,
   updateUserByIdService,
 } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.post("/login", createUserService);
+router.post("/signUp", createUserService);
+router.post("/login", getUserByEmailIdService);
 router.get("/login", getAllUsersService);
-router.get("/login/:id", getUserByIdService);
 router.post("/login/:id", updateUserByIdService);
 router.delete("/login/:id", deleteUserByIdService);
 

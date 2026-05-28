@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import {
   createUser,
   deleteUser,
@@ -6,18 +6,19 @@ import {
   getUser,
   updateUser,
 } from "../models/userModel.js";
-
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const createUserService = async (req, res, next) => {
   const { name, emailId, password, role } = req.body;
-  const id = uuidv4()
+  const id = uuidv4();
   try {
-    const newUser = await createUser(id, name, emailId, password, role);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = await createUser(id, name, emailId, hashedPassword, role);
     if (newUser) {
       res.status(201).json({
         status: 201,
         message: "User added successfuly",
-        data: newUser,
       });
     }
   } catch (err) {
@@ -41,15 +42,32 @@ export const getAllUsersService = async (req, res, next) => {
   }
 };
 
-export const getUserByIdService = async (req, res, next) => {
-  const { id } = req.params;
+export const getUserByEmailIdService = async (req, res, next) => {
+  const { emailId, password } = req.body;
   try {
     const user = await getUser(id);
-    if (user) {
-      res.status(200).json({
+    const isValidUser = await bcrypt.compare(password, user.password);
+    if (isValidUser) {
+      const token = jwt.sign(
+        {
+          emailId: user.emailId,
+          userId: user.id,
+        },
+        "Thisismysecretkey",
+        { expiresIn: "1h" },
+      );
+
+      const userData = {
+        userId: user.id,
+        userName: user.name,
+        emailId: user.emailId,
+      };
+
+      return res.status(200).json({
         status: 200,
-        message: "User fetched successfuly",
-        data: user,
+        data: userData,
+        token,
+        message: "User logged in successfully.",
       });
     }
   } catch (err) {
