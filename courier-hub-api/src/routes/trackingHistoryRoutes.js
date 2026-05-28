@@ -3,7 +3,7 @@ import { getTrackingHistoryById, updateTrackingHistory } from "../controllers/tr
 
 const router = express.Router();
 
-router.post("/:id", updateTrackingHistory);
+router.post("/:tracking_id", updateTrackingHistory);
 router.get("/:tracking_id", getTrackingHistoryById);
 
 export default router;

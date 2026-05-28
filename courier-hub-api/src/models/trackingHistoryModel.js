@@ -32,10 +32,10 @@ export const getTrackingHistoryByPackageId = async (id) => {
   return result.rows;
 };
 
-export const updateTrackingHistoryById = async (id, status, location) => {
-  const result = await pool.query(
-    "UPDATE tracking_history SET status=$1 , location=$2 WHERE id = $3 RETURNING *",
-    [status, location, id],
+export const updateTrackingHistoryById = async (client, id, status, region) => {
+  const result = await client.query(
+    "UPDATE tracking_history SET status=$1 , current_region=$2 WHERE package_id = $3 RETURNING *",
+    [status, region, id],
   );
   return result.rows[0];
 };

@@ -85,3 +85,11 @@ export const getPackageByTrackingId = async (id) => {
   );
   return result.rows[0];
 };
+
+export const updatePackageStatus = async (client, id, status, region, bagId) => {
+  const result = await client.query(
+    "UPDATE packages SET current_status=$1, region=$2, bag_id=$3, updated_at = CURRENT_TIMESTAMP WHERE tracking_id=$4 RETURNING *",
+    [status, region, bagId, id],
+  );
+  return result.rows[0];
+};
