@@ -1,6 +1,6 @@
 import pool from "../config/db.js";
 
-const createPackagesTable = async () => {
+const packagesTable = async () => {
   const query = `
   CREATE TABLE IF NOT EXISTS packages (
 
@@ -21,7 +21,7 @@ const createPackagesTable = async () => {
     weight DECIMAL(10,2) NOT NULL,
     region VARCHAR(50) NOT NULL,
     package_type VARCHAR(50) NOT NULL,
-    current_status package_status NOT NULL DEFAULT 'TO_BE_PICKED_UP',
+    current_status VARCHAR(50) NOT NULL DEFAULT 'TO_BE_PICKED_UP',
     bag_id VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -31,4 +31,4 @@ const createPackagesTable = async () => {
   await pool.query(query);
 };
 
-export default createPackagesTable;
+export default packagesTable;

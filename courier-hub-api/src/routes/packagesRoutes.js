@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/createPackage", createPackagesService);
 router.get("/getPackages", getAllPackagesService);
-router.get("/getPackage/:tracking_id", getPackageByIdService);
+router.get("/getPackage/:id", getPackageByIdService);
 
 
 

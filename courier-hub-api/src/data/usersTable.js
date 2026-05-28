@@ -1,6 +1,6 @@
 import pool from "../config/db.js";
 
-const createUserTable = async () => {
+const usersTable = async () => {
   const queryText = `
         CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY,
@@ -8,7 +8,7 @@ const createUserTable = async () => {
         emailId VARCHAR(100) UNIQUE NOT NULL,
         password TEXT,
         role VARCHAR(100),
-        created_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
         `;
 
@@ -19,4 +19,4 @@ const createUserTable = async () => {
   }
 };
 
-export default createUserTable;
+export default usersTable;

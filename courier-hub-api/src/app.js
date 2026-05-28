@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import packagesRoutes from "./routes/packagesRoutes.js";
+import trackingHistoryRoutes from "./routes/trackingHistoryRoutes.js";
 import errorHandling from "./middlewares/errorHandler.js";
 import initializeDB from "./config/initializeDB.js";
 
@@ -21,6 +22,7 @@ app.use(cors());
 
 app.use("/services/auth", userRoutes);
 app.use("/services/packages", packagesRoutes);
+app.use("/services/trackingHistory", trackingHistoryRoutes);
 
 //error handling
 app.use(errorHandling);

@@ -1,6 +1,11 @@
 import pool from "../config/db.js";
 
-export const createPackages = async (packagesData, packageId, trackingId) => {
+export const createPackages = async (
+  client,
+  packagesData,
+  packageId,
+  trackingId,
+) => {
   const {
     senderName,
     senderPhone,
@@ -19,7 +24,7 @@ export const createPackages = async (packagesData, packageId, trackingId) => {
     packageType,
   } = packagesData;
 
-  const result = await pool.query(
+  const result = await client.query(
     `INSERT INTO packages (
     id,
     tracking_id,
@@ -57,7 +62,7 @@ export const createPackages = async (packagesData, packageId, trackingId) => {
       receiverPincode,
       weight,
       region,
-      packageType
+      packageType,
     ],
   );
   return result.rows[0];
@@ -69,8 +74,13 @@ export const getAllPackages = async () => {
 };
 
 export const getPackageById = async (id) => {
+  const result = await pool.query("SELECT * FROM packages WHERE id = $1", [id]);
+  return result.rows[0];
+};
+
+export const getPackageByTrackingId = async (id) => {
   const result = await pool.query(
-    "SELECT * FROM packages WHERE id = $1 RETURNING *",
+    "SELECT * FROM packages WHERE tracking_id = $1",
     [id],
   );
   return result.rows[0];
