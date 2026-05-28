@@ -1,4 +1,12 @@
-import { Box, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 const FormField = ({ field, value, onChange }) => {
   const labelStyles = {
@@ -11,6 +19,29 @@ const FormField = ({ field, value, onChange }) => {
     backgroundColor: "#fff",
     borderRadius: "10px",
   };
+
+  if (field.type === "checkbox") {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          mt: 1,
+        }}
+      >
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={Boolean(value)}
+              onChange={(e) => onChange(field.key, e.target.checked)}
+            />
+          }
+          label={field.label}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -44,10 +75,12 @@ const FormField = ({ field, value, onChange }) => {
         <TextField
           size="small"
           fullWidth
+          type={field.type || "text"}
           value={value}
           onChange={(e) => onChange(field.key, e.target.value)}
           placeholder={field.placeholder}
           sx={inputStyles}
+          disabled={field.disabled}
         />
       )}
     </Box>

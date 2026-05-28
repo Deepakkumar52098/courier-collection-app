@@ -1,3 +1,31 @@
+export const initialData = {
+  senderName: "",
+  senderPhone: "",
+  senderAddress: "",
+  senderState: "",
+  senderCity: "",
+  senderPincode: "",
+
+  receiverName: "",
+  receiverPhone: "",
+  receiverAddress: "",
+  receiverState: "",
+  receiverCity: "",
+  receiverPincode: "",
+
+  weight: "",
+  region: "",
+  packageType: "",
+
+  billingName: "",
+  billingAddress: "",
+  sameAsSenderAddress: false,
+  paymentMode: "",
+
+  shippingCharges: 80,
+  packageCharges: 0,
+  totalAmount: 80,
+};
 export const senderFields = [
   {
     label: "Sender Name",
@@ -80,7 +108,7 @@ export const packageFields = [
   {
     label: "Weight (kg)",
     key: "weight",
-    type: "text",
+    type: "number",
     placeholder: "Enter package weight",
   },
   {
@@ -103,6 +131,36 @@ export const packageFields = [
       { label: "Fragile", value: "fragile" },
       { label: "Electronics", value: "electronics" },
       { label: "Clothing", value: "clothing" },
+    ],
+  },
+];
+
+export const billingFields = [
+  {
+    label: "Billing Name",
+    key: "billingName",
+    type: "text",
+    placeholder: "Enter billing name",
+  },
+  {
+    label: "Same as Sender Address",
+    key: "sameAsSenderAddress",
+    type: "checkbox",
+  },
+  {
+    label: "Billing Address",
+    key: "billingAddress",
+    type: "text",
+    placeholder: "Enter billing address",
+  },
+  {
+    label: "Payment Mode",
+    key: "paymentMode",
+    type: "select",
+    options: [
+      { label: "Cash", value: "cash" },
+      { label: "UPI", value: "upi" },
+      { label: "Card", value: "card" },
     ],
   },
 ];

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const packageSlice = createSlice({
   name: "packages",
   initialState: {
-    createPackageData: { loading: false, data: [], error: null, message: null },
+    createPackageData: { loading: false, data: {}, error: null, message: null },
     allPackages: { loading: false, data: [], error: null, message: null },
     package: { loading: false, data: [], error: null, message: null },
   },
@@ -38,6 +38,14 @@ const packageSlice = createSlice({
       state.allPackages.loading = false;
       state.allPackages.error = action.payload;
     },
+    resetCreatePackage(state) {
+      state.createPackageData = {
+        loading: false,
+        data: {},
+        error: null,
+        message: null,
+      };
+    },
   },
 });
 
@@ -48,6 +56,7 @@ export const {
   fetchPackages,
   setPackages,
   setPackagesError,
+  resetCreatePackage,
 } = packageSlice.actions;
 
 export default packageSlice.reducer;

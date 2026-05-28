@@ -116,6 +116,7 @@ const PackageDetails = () => {
                           sx={{
                             fontSize: 16,
                             "&:hover": {
+                              cursor: "pointer",
                               color: "#1976d2",
                             },
                           }}
