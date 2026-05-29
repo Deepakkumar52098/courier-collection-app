@@ -2,14 +2,14 @@ import pool from "../config/db.js";
 
 export const createUser = async (id, name, emailId, password, role) => {
   const result = await pool.query(
-    "INSERT INTO users (id, name, emailId, password, role) VALUES($1, $2, $3, $4, $5) RETURNING *",
+    "INSERT INTO users (id, name, email_id, password, role) VALUES($1, $2, $3, $4, $5) RETURNING *",
     [id, name, emailId, password, role],
   );
   return result.rows[0];
 };
 
-export const getUser = async (id) => {
-  const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+export const getUser = async (emailId) => {
+  const result = await pool.query("SELECT * FROM users WHERE email_id = $1", [emailId]);
   return result.rows[0];
 };
 

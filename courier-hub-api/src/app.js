@@ -7,6 +7,7 @@ import packagesRoutes from "./routes/packagesRoutes.js";
 import trackingHistoryRoutes from "./routes/trackingHistoryRoutes.js";
 import errorHandling from "./middlewares/errorHandler.js";
 import initializeDB from "./config/initializeDB.js";
+import { isAuth } from "./middlewares/isAuth.js";
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ app.use(cors());
 //routes
 
 app.use("/services/auth", userRoutes);
-app.use("/services/packages", packagesRoutes);
+app.use("/services/packages", isAuth, packagesRoutes);
 app.use("/services/trackingHistory", trackingHistoryRoutes);
 
 //error handling

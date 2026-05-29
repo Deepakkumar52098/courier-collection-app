@@ -1,14 +1,20 @@
 import jwt from "jsonwebtoken";
+
 export const isAuth = (req, res, next) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    const error = new Error("Authentication failed.");
+    const error = new Error("Token missing. Authentication failed.");
     error.statusCode = 401;
-    throw new error();
+    throw error;
   }
   const token = authHeader.split(" ")[1];
   let verifiedToken;
   try {
+    if (!token) {
+      const error = new Error("Token missing. Authentication failed.");
+      error.statusCode = 401;
+      throw error;
+    }
     verifiedToken = jwt.verify(token, "Thisismysecretkey");
   } catch (err) {
     err.statusCode = 500;

@@ -19,11 +19,11 @@ const authSlice = createSlice({
     },
     setLogin(state, action) {
       state.loginDetails.loading = false;
-      state.loginDetails.user = action.payload.user;
+      state.loginDetails.user = action.payload.data;
       state.loginDetails.message = action.payload.message;
       state.loginDetails.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("user", JSON.stringify(action.payload.data));
     },
     setLoginError(state, action) {
       state.loginDetails.loading = false;

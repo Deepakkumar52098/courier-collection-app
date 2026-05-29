@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getTrackingHistory } from "../../store/slices/trackingHistorySlice";
+import {
+  getTrackingHistory,
+  resetTrackingHistory,
+} from "../../store/slices/trackingHistorySlice";
 import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 import TrackingTimeline from "./TrackingTimeline";
 
@@ -11,9 +14,15 @@ const TrackPackages = () => {
     (state) => state.trackingHistory?.trackingData,
   );
 
+  const dispatch = useDispatch();
+
   console.log("trackingData", trackingData);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      dispatch(resetTrackingHistory());
+    };
+  }, [dispatch]);
 
   const handleTrackPackage = () => {
     if (!trackingId) {
@@ -59,7 +68,7 @@ const TrackPackages = () => {
           </Button>
         </Box>
       </Paper>
-      {trackingData?.data && (
+      {trackingData?.data?.history?.length > 0 && (
         <TrackingTimeline trackingData={trackingData?.data} />
       )}
     </Box>

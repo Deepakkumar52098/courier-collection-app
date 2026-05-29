@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 const updateTrackingHistoryAndPackage = async (tracking_id, body) => {
   const client = await pool.connect();
   const id = uuidv4();
-  const { status, region, remarks, bagId=null } = body;
+  const { status, region, remarks, bagId = null } = body;
   try {
     await client.query("BEGIN");
     const updatedPackage = await updatePackageStatus(
@@ -20,7 +20,7 @@ const updateTrackingHistoryAndPackage = async (tracking_id, body) => {
       tracking_id,
       status,
       region,
-      bagId
+      bagId,
     );
     if (!updatedPackage) {
       throw new Error("Package not found");

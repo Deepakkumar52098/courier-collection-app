@@ -65,10 +65,7 @@ const PackageDetails = () => {
                   backgroundColor: "#1976d2",
                 }}
               >
-                <TableCell colSpan={3} sx={{}}></TableCell>
-                <TableCell colSpan={6} align="center">
-                  Package Details
-                </TableCell>
+                <TableCell colSpan={9} align="center">Package Details</TableCell>
               </TableRow>
               <TableRow
                 sx={{
@@ -142,7 +139,7 @@ const PackageDetails = () => {
                           backgroundColor: "transparent",
                         }}
                       >
-                        <IconButton>
+                        <IconButton sx={{ p: 0 }}>
                           <DeleteIcon onClick={(e) => handleDelete(e, data)} />
                         </IconButton>
                       </Box>

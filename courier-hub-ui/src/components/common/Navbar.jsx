@@ -41,7 +41,13 @@ export default function Navbar() {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography
             variant="h6"
             noWrap
@@ -101,7 +107,7 @@ export default function Navbar() {
                 sx={{ p: 0, marginRight: "50px" }}
               >
                 <Avatar
-                  alt={loginDetails?.user?.userName}
+                  alt={loginDetails?.userName}
                   src="/static/images/avatar/2.jpg"
                 />
               </IconButton>

@@ -4,8 +4,8 @@ import { createPackagesService, getAllPackagesService, getPackageByIdService } f
 const router = express.Router();
 
 router.post("/createPackage", createPackagesService);
-router.get("/getPackages", getAllPackagesService);
-router.get("/getPackage/:id", getPackageByIdService);
+router.get("/packagesList", getAllPackagesService);
+router.get("/:id", getPackageByIdService);
 
 
 

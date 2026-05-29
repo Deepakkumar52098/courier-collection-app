@@ -45,7 +45,7 @@ export const getAllUsersService = async (req, res, next) => {
 export const getUserByEmailIdService = async (req, res, next) => {
   const { emailId, password } = req.body;
   try {
-    const user = await getUser(id);
+    const user = await getUser(emailId);
     const isValidUser = await bcrypt.compare(password, user.password);
     if (isValidUser) {
       const token = jwt.sign(
@@ -60,7 +60,7 @@ export const getUserByEmailIdService = async (req, res, next) => {
       const userData = {
         userId: user.id,
         userName: user.name,
-        emailId: user.emailId,
+        emailId: user.email_id,
       };
 
       return res.status(200).json({

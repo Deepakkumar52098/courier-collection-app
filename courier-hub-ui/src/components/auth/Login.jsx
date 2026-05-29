@@ -1,20 +1,24 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { Box, Button, InputLabel, TextField } from "@mui/material";
 import { useState } from "react";
+import { fetchLogin } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmailId] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const dispatch = useDispatch()
 
   const handleButtonClick = () => {
-    //invoke login api
-    // dispatch(fetchLogin({
-    //     method: API_CONSTANTS.LOGIN,
-    //     body: {
-    //         emailId,
-    //         password
-    //     }
-    // }))
+    dispatch(fetchLogin({
+        method: API_CONSTANTS.LOGIN,
+        body: {
+            emailId,
+            password
+        }
+    }))
   };
 
   return (
