@@ -3,6 +3,7 @@ import packagesTable from "../data/packagesTable.js";
 import createPackageStatusEnum from "../data/packageStatusEnum.js";
 import pool from "./db.js";
 import trackingHistoryTable from "../data/trackingHistoryTable.js";
+import billingInfoTable from "../data/billingInfoTable.js";
 
 const initializeDB = async () => {
   try {
@@ -15,6 +16,8 @@ const initializeDB = async () => {
     await usersTable();
 
     await packagesTable();
+
+    await billingInfoTable();
 
     await trackingHistoryTable();
 

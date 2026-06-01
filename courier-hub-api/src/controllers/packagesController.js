@@ -3,17 +3,26 @@ import {
   createPackages,
   getAllPackages,
   getPackageById,
+  getPackageByTrackingId,
 } from "../models/packagesModel.js";
 
 import pool from "../config/db.js";
 
 import { createTrackingHistory } from "../models/trackingHistoryModel.js";
+import {
+  addBillingInfoDetails,
+  getBillingInfoByPackageId,
+} from "../models/billingInfoModel.js";
 
-export const createAndUpdateTrackingHistory = async (packagesData) => {
+export const createAndUpdateTrackingHistory = async (
+  packagesData,
+  billingDetails,
+) => {
   const client = await pool.connect();
   const packageId = uuidv4();
   const trackingId = uuidv4();
   const trackingHistoryId = uuidv4();
+  const billingInfoId = uuidv4();
 
   try {
     await client.query("BEGIN");
@@ -24,6 +33,15 @@ export const createAndUpdateTrackingHistory = async (packagesData) => {
       packageId,
       trackingId,
     );
+
+    const result = await addBillingInfoDetails(
+      client,
+      billingDetails,
+      billingInfoId,
+      packageId,
+    );
+
+    console.log(result);
 
     // Create initial tracking history
     await createTrackingHistory(
@@ -45,9 +63,12 @@ export const createAndUpdateTrackingHistory = async (packagesData) => {
 };
 
 export const createPackagesService = async (req, res, next) => {
-  const { packagesData } = req.body;
+  const { packagesData, billingDetails } = req.body;
   try {
-    const newPackage = await createAndUpdateTrackingHistory(packagesData);
+    const newPackage = await createAndUpdateTrackingHistory(
+      packagesData,
+      billingDetails,
+    );
     if (!newPackage) {
       return res.status(500).json({
         status: 500,
@@ -65,9 +86,10 @@ export const createPackagesService = async (req, res, next) => {
 };
 
 export const getAllPackagesService = async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.body;
   try {
-    const packages = await getAllPackages();
-    if (!packages) {
+    const { packagesData, totalCount } = await getAllPackages(limit, offset);
+    if (!packagesData) {
       return res.status(500).json({
         status: 500,
         message: "Failed to fetch packages detail.",
@@ -76,7 +98,14 @@ export const getAllPackagesService = async (req, res, next) => {
     return res.status(200).json({
       status: 200,
       message: "All packages fetched successfuly",
-      data: packages,
+      data: {
+        packagesList: packagesData,
+        pagination: {
+          totalRows: totalCount,
+          limit,
+          offset,
+        },
+      },
     });
   } catch (err) {
     next(err);

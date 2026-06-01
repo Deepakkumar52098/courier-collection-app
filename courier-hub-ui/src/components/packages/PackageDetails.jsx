@@ -12,27 +12,41 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPackages } from "../../store/slices/packageSlice";
 import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CustomPagination from "../common/CustomPagination";
 
 const PackageDetails = () => {
   const dispatch = useDispatch();
 
   const { allPackages } = useSelector((state) => state.packageDetails);
+  const paginationData = allPackages?.data?.pagination;
 
-  console.log(allPackages);
+  const [page, setPage] = useState(1);
+  const [pageInput, setPageInput] = useState(1);
+
+  const ROWS_PER_PAGE = 10;
+  const totalPages = Math.ceil(
+    Number(paginationData?.totalRows) / ROWS_PER_PAGE,
+  );
+
+  console.log(paginationData);
 
   useEffect(() => {
     dispatch(
       fetchPackages({
         method: API_CONSTANTS.GET_PACKAGES,
+        body: {
+          limit: ROWS_PER_PAGE,
+          offset: 0,
+        },
       }),
     );
-  }, []);
+  }, [dispatch]);
 
   const handleDelete = () => {
     //delete logic
@@ -46,6 +60,44 @@ const PackageDetails = () => {
       month: "short",
       year: "numeric",
     });
+  };
+
+  const handlePageChange = (event, pageNumber) => {
+    setPage(pageNumber);
+    setPageInput(pageNumber);
+    dispatch(
+      fetchPackages({
+        method: API_CONSTANTS.GET_PACKAGES,
+        body: {
+          limit: ROWS_PER_PAGE,
+          offset: (pageNumber - 1) * ROWS_PER_PAGE,
+        },
+      }),
+    );
+  };
+
+  const handleGoToPageEnter = (event) => {
+    if (event.key !== "Enter") return;
+    if (pageInput >= 1 && pageInput <= totalPages) {
+      setPage(pageInput);
+      dispatch(
+        fetchPackages({
+          method: API_CONSTANTS.GET_PACKAGES,
+          body: {
+            limit: ROWS_PER_PAGE,
+            offset: (pageInput - 1) * ROWS_PER_PAGE,
+          },
+        }),
+      );
+    } else {
+      setPageInput(page);
+    }
+  };
+
+  const handleGoToPageChange = (event) => {
+    const pageNumber =
+      event.target.value === "" ? "" : Number(event.target.value);
+    setPageInput(pageNumber);
   };
 
   return (
@@ -65,7 +117,9 @@ const PackageDetails = () => {
                   backgroundColor: "#1976d2",
                 }}
               >
-                <TableCell colSpan={9} align="center">Package Details</TableCell>
+                <TableCell colSpan={9} align="center">
+                  Package Details
+                </TableCell>
               </TableRow>
               <TableRow
                 sx={{
@@ -84,7 +138,7 @@ const PackageDetails = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allPackages?.data?.map((data) => (
+              {allPackages?.data?.packagesList?.map((data) => (
                 <TableRow
                   key={data._id}
                   sx={{
@@ -149,6 +203,14 @@ const PackageDetails = () => {
               ))}
             </TableBody>
           </Table>
+          <CustomPagination
+            page={page}
+            pageInput={pageInput}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            handleGoToPageChange={handleGoToPageChange}
+            handleGoToPageEnter={handleGoToPageEnter}
+          />
         </TableContainer>
       </Grid>
     </Grid>

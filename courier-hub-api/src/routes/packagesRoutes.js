@@ -4,9 +4,7 @@ import { createPackagesService, getAllPackagesService, getPackageByIdService } f
 const router = express.Router();
 
 router.post("/createPackage", createPackagesService);
-router.get("/packagesList", getAllPackagesService);
+router.post("/packagesList", getAllPackagesService);
 router.get("/:id", getPackageByIdService);
-
-
 
 export default router;

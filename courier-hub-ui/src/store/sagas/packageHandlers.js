@@ -7,7 +7,7 @@ import {
 } from "../slices/packageSlice";
 import {
   requestCreateCourier,
-  requestGetPackages,
+  requestPackagesList,
 } from "../../api/packagesApi";
 
 export function* handleCreateCourier(action) {
@@ -31,7 +31,7 @@ export function* handleCreateCourier(action) {
 
 export function* handleGetPackages(action) {
   try {
-    const response = yield call(requestGetPackages, action.payload);
+    const response = yield call(requestPackagesList, action.payload);
     const { data } = response;
     yield put(
       setPackages({

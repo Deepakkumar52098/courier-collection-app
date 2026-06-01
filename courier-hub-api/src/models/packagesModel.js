@@ -68,9 +68,18 @@ export const createPackages = async (
   return result.rows[0];
 };
 
-export const getAllPackages = async () => {
-  const result = await pool.query("SELECT * FROM packages");
-  return result.rows;
+export const getAllPackages = async (limit, offset) => {
+  const [data, count] = await Promise.all([
+    pool.query(
+      "SELECT * FROM packages ORDER BY created_at DESC LIMIT $1 OFFSET $2",
+      [limit, offset],
+    ),
+    pool.query("SELECT COUNT(*) AS total FROM packages"),
+  ]);
+  return {
+    totalCount: count.rows[0].total,
+    packagesData: data.rows,
+  };
 };
 
 export const getPackageById = async (id) => {
@@ -86,7 +95,13 @@ export const getPackageByTrackingId = async (id) => {
   return result.rows[0];
 };
 
-export const updatePackageStatus = async (client, id, status, region, bagId) => {
+export const updatePackageStatus = async (
+  client,
+  id,
+  status,
+  region,
+  bagId,
+) => {
   const result = await client.query(
     "UPDATE packages SET current_status=$1, region=$2, bag_id=$3, updated_at = CURRENT_TIMESTAMP WHERE tracking_id=$4 RETURNING *",
     [status, region, bagId, id],
