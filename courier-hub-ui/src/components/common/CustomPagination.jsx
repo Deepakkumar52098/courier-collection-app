@@ -15,6 +15,8 @@ const CustomPagination = ({
         alignItems: "center",
         justifyContent: "space-between",
         padding: "8px",
+        width: '100%',
+        marginTop: '8px'
       }}
     >
       <Pagination

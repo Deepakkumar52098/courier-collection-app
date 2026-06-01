@@ -108,3 +108,58 @@ export const updatePackageStatus = async (
   );
   return result.rows[0];
 };
+
+const getCountByStatus = () =>
+  pool.query(
+    "SELECT current_status, COUNT(*) as count FROM packages GROUP BY current_status",
+  );
+
+const getLatestPackagesByStatus = (status) =>
+  pool.query(
+    `SELECT
+        tracking_id,
+        sender_name,
+        receiver_name,
+        sender_city,
+        receiver_city,
+        weight,
+        region,
+        current_status,
+        updated_at,
+        created_at
+     FROM packages
+     WHERE current_status = $1
+     ORDER BY updated_at DESC
+     LIMIT 5`,
+    [status],
+  );
+
+const getActivePackages = () => {
+  return pool.query(
+    `
+    SELECT tracking_id, sender_name, receiver_name, sender_city , receiver_city, region, current_status, updated_at
+    FROM packages
+    WHERE current_status NOT IN ($1, $2)
+    ORDER BY updated_at DESC
+    LIMIT 5
+  `,
+    ["TO_BE_PICKED_UP", "DELIVERED"],
+  );
+};
+
+export const getDashboardDetailsByStatus = async () => {
+  const [countsResult, recentlyAddedResult, activeResult, deliveredResult] =
+    await Promise.all([
+      getCountByStatus(),
+      getLatestPackagesByStatus("TO_BE_PICKED_UP"),
+      getActivePackages(),
+      getLatestPackagesByStatus("DELIVERED"),
+    ]);
+
+  return {
+    countsResult: countsResult.rows,
+    recentlyCreated: recentlyAddedResult.rows,
+    activeDeliveries: activeResult.rows,
+    delivered: deliveredResult.rows,
+  };
+};

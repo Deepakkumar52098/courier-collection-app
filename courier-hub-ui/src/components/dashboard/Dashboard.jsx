@@ -1,17 +1,40 @@
 import { Box, Grid } from "@mui/material";
-import PackageDetails from "../packages/PackageDetails";
 import CustomCard from "../common/CustomCard";
+import DashboardTable from "../common/DashboardTable";
+import TableHeaders from "../common/TableHeaders";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDashboardData } from "../../store/slices/packageSlice";
+import { API_CONSTANTS } from "../../api/API_CONSTANTS";
+import {
+  activeDeliveriesMapping,
+  delayedPackagesMapping,
+  deliveredPackagesMapping,
+  pendingPickupMapping,
+} from "./dashboardUtils";
 
 const Dashboard = () => {
-  const cardsContent = [
-    { title: "Pending Pickup", totalCount: 205 },
-    { title: "In Transit", totalCount: 205 },
-    { title: "Delayed Packages", totalCount: 205 },
-    { title: "Delivered Today", totalCount: 205 },
-  ];
+  const dispatch = useDispatch();
+
+  const { dashboardData } = useSelector((state) => state.packageDetails);
+
+  const { recentlyCreated, activeDeliveries, delivered } = dashboardData.data;
+
+  const cardsData = dashboardData?.data?.counts;
+
+  console.log("cardsData", cardsData);
+
+  useEffect(() => {
+    dispatch(
+      fetchDashboardData({
+        method: API_CONSTANTS.DASHBOARD_API,
+      }),
+    );
+  }, [dispatch]);
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
+    <Grid container spacing={2} sx={{ mt: 4 }}>
+      <Grid item size={12}>
         <Box
           sx={{
             display: "flex",
@@ -22,18 +45,49 @@ const Dashboard = () => {
             width: "100%",
           }}
         >
-          {cardsContent?.map((item) => (
+          {cardsData?.map((item) => (
             <CustomCard
               key={item.title}
               title={item.title}
-              totalCount={item.totalCount}
+              totalCount={item.count}
             />
           ))}
         </Box>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <PackageDetails />
+      <Grid container item size={12} sx={{ mt: 3 }}>
+        <Grid container item size={12} sx={{ mt: 3 }}>
+          <Grid size={6} sx={{ mr: 8 }}>
+            <TableHeaders title="Pending Pickup" actionName="VIEW ALL" />
+            <DashboardTable
+              columsToBeMapped={pendingPickupMapping}
+              tableData={recentlyCreated}
+            />
+          </Grid>
+          <Grid size={5}>
+            <TableHeaders title="Active Deliveries" actionName="VIEW ALL" />
+            <DashboardTable
+              columsToBeMapped={activeDeliveriesMapping}
+              tableData={activeDeliveries}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item size={12} sx={{ mt: 3 }}>
+          <Grid size={6} sx={{ mr: 8 }}>
+            <TableHeaders title="Delayed Packages" actionName="VIEW ALL" />
+            <DashboardTable
+              columsToBeMapped={delayedPackagesMapping}
+              tableData={delivered}
+            />
+          </Grid>
+          <Grid size={5}>
+            <TableHeaders title="Delivered" actionName="VIEW ALL" />
+            <DashboardTable
+              columsToBeMapped={deliveredPackagesMapping}
+              tableData={delivered}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

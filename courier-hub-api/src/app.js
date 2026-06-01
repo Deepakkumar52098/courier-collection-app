@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import packagesRoutes from "./routes/packagesRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 import trackingHistoryRoutes from "./routes/trackingHistoryRoutes.js";
 import billingInfoRoutes from "./routes/billingInfoRoutes.js";
 import errorHandling from "./middlewares/errorHandler.js";
@@ -23,7 +24,8 @@ app.use(cors());
 //routes
 
 app.use("/services/auth", userRoutes);
-app.use("/services/packages", packagesRoutes);
+app.use("/services/packages", isAuth, packagesRoutes);
+app.use("/services/dashboard", isAuth, dashboardRoutes);
 app.use("/services/billingInfo", billingInfoRoutes);
 app.use("/services/trackingHistory", trackingHistoryRoutes);
 

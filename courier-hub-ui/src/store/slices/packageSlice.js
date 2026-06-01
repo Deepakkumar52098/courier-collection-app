@@ -6,6 +6,7 @@ const packageSlice = createSlice({
     createPackageData: { loading: false, data: {}, error: null, message: null },
     allPackages: { loading: false, data: [], error: null, message: null },
     package: { loading: false, data: [], error: null, message: null },
+    dashboardData: { loading: false, data: [], error: null, message: null },
   },
   reducers: {
     createPackage(state) {
@@ -38,6 +39,21 @@ const packageSlice = createSlice({
       state.allPackages.loading = false;
       state.allPackages.error = action.payload;
     },
+    fetchDashboardData(state) {
+      state.dashboardData.loading = true;
+      state.dashboardData.data = [];
+      state.dashboardData.message = null;
+      state.dashboardData.error = null;
+    },
+    setDashboardData(state, action) {
+      state.dashboardData.loading = false;
+      state.dashboardData.data = action.payload.data;
+      state.dashboardData.message = action.payload.message;
+    },
+    setDashboardError(state, action) {
+      state.dashboardData.loading = false;
+      state.dashboardData.error = action.payload;
+    },
     resetCreatePackage(state) {
       state.createPackageData = {
         loading: false,
@@ -56,6 +72,9 @@ export const {
   fetchPackages,
   setPackages,
   setPackagesError,
+  fetchDashboardData,
+  setDashboardData,
+  setDashboardError,
   resetCreatePackage,
 } = packageSlice.actions;
 
