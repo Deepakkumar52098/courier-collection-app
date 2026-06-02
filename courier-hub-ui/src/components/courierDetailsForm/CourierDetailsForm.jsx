@@ -1,19 +1,24 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Paper } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import FormSection from "../common/FormSection";
 import {
-  billingFields,
   initialData,
   packageFields,
   receiverFields,
   senderFields,
 } from "./courierDetailUtils";
 import { useDispatch, useSelector } from "react-redux";
-import { createPackage } from "../../store/slices/packageSlice";
+import {
+  createPackage,
+  resetCreatePackage,
+} from "../../store/slices/packageSlice";
 import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 import TransactionRecipt from "./TransactionRecipt";
 import PreviewDetails from "./PreviewDetails";
+import FooterButtons from "./FooterButtons";
+import FormHeader from "./FormHeader";
+import BillingDetails from "./BillingDetails";
 
 const CourierDetailsForm = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -24,11 +29,9 @@ const CourierDetailsForm = () => {
 
   const [formData, setFormData] = useState(initialData);
 
-  useEffect(() => {
+  const getPackageCharges = useCallback(() => {
     const weight = Number(formData.weight);
-
     let packageCharges = 0;
-
     if (weight <= 1) {
       packageCharges = 50;
     } else if (weight <= 5) {
@@ -36,15 +39,26 @@ const CourierDetailsForm = () => {
     } else if (weight > 5) {
       packageCharges = 200;
     }
-
     const totalAmount = Number(formData.shippingCharges) + packageCharges;
+    return {
+      packageCharges,
+      totalAmount,
+    };
+  }, [formData.weight, formData.shippingCharges]);
+
+  useEffect(() => {
+    const { packageCharges, totalAmount } = getPackageCharges();
 
     setFormData((prev) => ({
       ...prev,
       packageCharges,
       totalAmount,
     }));
-  }, [formData.weight, formData.shippingCharges]);
+
+    return () => {
+      dispatch(resetCreatePackage());
+    };
+  }, [dispatch, getPackageCharges]);
 
   const handleChange = (key, value) => {
     setFormData((prev) => {
@@ -97,7 +111,7 @@ const CourierDetailsForm = () => {
 
     dispatch(
       createPackage({
-        method: API_CONSTANTS.CREATE_COURIER,
+        method: API_CONSTANTS.CREATE_COURIER_API,
         body: {
           packagesData,
           billingDetails,
@@ -138,81 +152,16 @@ const CourierDetailsForm = () => {
           />
         );
 
-      case 4: {
-        const updatedBillingFields = billingFields.map((field) => {
-          if (field.key === "billingAddress") {
-            return {
-              ...field,
-              disabled: formData.sameAsSenderAddress,
-            };
-          }
-
-          return field;
-        });
-
+      case 4:
         return (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-            }}
-          >
-            <FormSection
-              title="Billing Details"
-              fields={updatedBillingFields}
-              formData={formData}
-              onChange={handleChange}
-            />
-            <Paper
-              elevation={0}
-              sx={{
-                p: 3,
-                borderRadius: 3,
-                backgroundColor: "#ffffff",
-                border: "1px solid #e2e8f0",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "18px",
-                  fontWeight: 600,
-                  mb: 2,
-                }}
-              >
-                Charges Summary
-              </Typography>
-
-              <Box sx={{ display: "grid", gap: 1 }}>
-                <Typography>
-                  Shipping Charges: ₹{formData.shippingCharges}
-                </Typography>
-
-                <Typography>
-                  Package Charges: ₹{formData.packageCharges}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "18px",
-                  }}
-                >
-                  Total Amount: ₹{formData.totalAmount}
-                </Typography>
-              </Box>
-            </Paper>
-          </Box>
+          <BillingDetails formData={formData} handleChange={handleChange} />
         );
-      }
       case 5:
         return <PreviewDetails formData={formData} />;
       default:
         return null;
     }
   };
-
-  console.log("createPackageData", createPackageData);
 
   return Object.keys(createPackageData?.data || {}).length > 0 ? (
     <TransactionRecipt
@@ -235,93 +184,14 @@ const CourierDetailsForm = () => {
         boxSizing: "border-box",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 4,
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: '#1976d2'
-          }}
-        >
-          Create Courier
-        </Typography>
-
-        <Typography
-          sx={{
-            fontSize: "16px",
-            fontWeight: 500,
-            color: "#64748b",
-          }}
-        >
-          Step {activeStep} of 5
-        </Typography>
-      </Box>
-
+      <FormHeader activeStep={activeStep} />
       {renderStepContent()}
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          mt: 5,
-        }}
-      >
-        <Box>
-          {activeStep > 1 && (
-            <Button
-              variant="outlined"
-              onClick={handlePrevious}
-              sx={{
-                textTransform: "none",
-                px: 4,
-                py: 1,
-                borderRadius: "10px",
-              }}
-            >
-              Previous
-            </Button>
-          )}
-        </Box>
-
-        <Box>
-          {activeStep < 5 ? (
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              sx={{
-                textTransform: "none",
-                px: 4,
-                py: 1,
-                borderRadius: "10px",
-                fontWeight: 600,
-              }}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              sx={{
-                textTransform: "none",
-                px: 4,
-                py: 1,
-                borderRadius: "10px",
-                fontWeight: 600,
-              }}
-            >
-              Create Courier
-            </Button>
-          )}
-        </Box>
-      </Box>
+      <FooterButtons
+        activeStep={activeStep}
+        handlePrevious={handlePrevious}
+        handleNext={handleNext}
+        handleSubmit={handleSubmit}
+      />
     </Paper>
   );
 };

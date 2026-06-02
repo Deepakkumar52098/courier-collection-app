@@ -1,5 +1,8 @@
 import { call, put } from "redux-saga/effects";
-import { setTrackingHistory, setTrackingHistoryError } from "../slices/trackingHistorySlice";
+import {
+  setTrackingHistory,
+  setTrackingHistoryError,
+} from "../slices/trackingHistorySlice";
 import { requestTrackingHistory } from "../../api/trackingHistoryApi";
 
 export function* handleTrackingHistory(action) {

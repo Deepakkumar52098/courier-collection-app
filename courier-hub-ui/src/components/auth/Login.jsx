@@ -14,7 +14,7 @@ const Login = () => {
   const handleButtonClick = () => {
     dispatch(
       fetchLogin({
-        method: API_CONSTANTS.LOGIN,
+        method: API_CONSTANTS.LOGIN_API,
         body: {
           emailId,
           password,
@@ -28,16 +28,16 @@ const Login = () => {
       <Box
         sx={{
           backgroundColor: "#1976d2",
-          color: '#FFF',
+          color: "#FFF",
           height: "50px",
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Typography sx={{fontWeight: 600}}>LOGIN</Typography>
+        <Typography sx={{ fontWeight: 600 }}>LOGIN</Typography>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", margin: '16px' }}>
+      <Box sx={{ display: "flex", flexDirection: "column", margin: "16px" }}>
         <InputLabel sx={{ textAlign: "left" }}>EmailId</InputLabel>
         <TextField
           sx={{ width: "75%" }}
@@ -48,7 +48,7 @@ const Login = () => {
           variant="outlined"
         />
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", margin: '16px'  }}>
+      <Box sx={{ display: "flex", flexDirection: "column", margin: "16px" }}>
         <InputLabel sx={{ textAlign: "left" }}>Password</InputLabel>
         <TextField
           sx={{ width: "75%" }}
@@ -62,7 +62,12 @@ const Login = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           onClick={handleButtonClick}
-          sx={{ bgcolor: "#1976d2", margin: "10px", color: "#FFF", fontWeight: 600 }}
+          sx={{
+            bgcolor: "#1976d2",
+            margin: "10px",
+            color: "#FFF",
+            fontWeight: 600,
+          }}
         >
           Login
         </Button>

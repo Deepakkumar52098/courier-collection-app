@@ -5,11 +5,10 @@ import TrackPackages from "../trackPackage/TrackPackages";
 import { useState } from "react";
 
 const Auth = () => {
-  const [value, setValue] = useState("Login");
+  const [feature, setFeature] = useState("Login");
 
-  const handleChange = (newValue) => {
-    console.log("newValue", newValue);
-    setValue(newValue);
+  const handleChange = (value) => {
+    setFeature(value);
   };
 
   return (
@@ -44,7 +43,7 @@ const Auth = () => {
           Track Courier
         </Link>
       </Box>
-      {value === "Track Courier" ? (
+      {feature === "Track Courier" ? (
         <Box
           sx={{
             marginLeft: "10%",

@@ -6,7 +6,7 @@ const packageSlice = createSlice({
     createPackageData: { loading: false, data: {}, error: null, message: null },
     allPackages: { loading: false, data: [], error: null, message: null },
     package: { loading: false, data: [], error: null, message: null },
-    dashboardData: { loading: false, data: [], error: null, message: null },
+    dashboardData: { loading: false, data: {}, error: null, message: null },
   },
   reducers: {
     createPackage(state) {
@@ -41,7 +41,7 @@ const packageSlice = createSlice({
     },
     fetchDashboardData(state) {
       state.dashboardData.loading = true;
-      state.dashboardData.data = [];
+      state.dashboardData.data = {};
       state.dashboardData.message = null;
       state.dashboardData.error = null;
     },

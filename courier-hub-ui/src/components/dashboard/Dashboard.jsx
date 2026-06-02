@@ -12,6 +12,7 @@ import {
   deliveredPackagesMapping,
   pendingPickupMapping,
 } from "./dashboardUtils";
+import CustomLoader from "../common/CustomLoader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,6 @@ const Dashboard = () => {
 
   const cardsData = dashboardData?.data?.counts;
 
-  console.log("cardsData", cardsData);
-
   useEffect(() => {
     dispatch(
       fetchDashboardData({
@@ -31,6 +30,10 @@ const Dashboard = () => {
       }),
     );
   }, [dispatch]);
+
+    if (dashboardData?.loading) {
+    return <CustomLoader />;
+  }
 
   return (
     <Grid container spacing={2} sx={{ mt: 4 }}>
@@ -57,7 +60,7 @@ const Dashboard = () => {
 
       <Grid container item size={12} sx={{ mt: 3 }}>
         <Grid container item size={12} sx={{ mt: 3 }}>
-          <Grid size={6} sx={{ mr: 8 }}>
+          <Grid size={7}>
             <TableHeaders title="Pending Pickup" actionName="VIEW ALL" />
             <DashboardTable
               columsToBeMapped={pendingPickupMapping}

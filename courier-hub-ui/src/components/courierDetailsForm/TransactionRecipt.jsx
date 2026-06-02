@@ -6,20 +6,25 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { resetCreatePackage } from "../../store/slices/packageSlice";
 import { initialData } from "./courierDetailUtils";
 
-const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }) => {
-  console.log("packageData", packageData);
+const TransactionRecipt = ({
+  packageData,
+  dispatch,
+  setActiveStep,
+  setFormData,
+}) => {
   const {
     tracking_id,
     sender_city,
     receiver_city,
     weight,
+    current_status,
     onPrintReceipt = () => {},
   } = packageData;
 
   const onCreateAnother = () => {
     dispatch(resetCreatePackage());
-    setActiveStep(1)
-    setFormData(initialData)
+    setActiveStep(1);
+    setFormData(initialData);
   };
 
   return (
@@ -35,7 +40,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
         backgroundColor: "#f8fafc",
       }}
     >
-      {/* Header */}
       <Typography
         sx={{
           fontSize: "14px",
@@ -48,7 +52,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
         Package Created
       </Typography>
 
-      {/* Success Card */}
       <Paper
         elevation={0}
         sx={{
@@ -58,7 +61,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
           backgroundColor: "#ffffff",
         }}
       >
-        {/* Success Icon */}
         <Box
           sx={{
             display: "flex",
@@ -73,8 +75,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
             }}
           />
         </Box>
-
-        {/* Title */}
         <Typography
           align="center"
           sx={{
@@ -86,8 +86,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
         >
           Package Created Successfully!
         </Typography>
-
-        {/* Tracking Label */}
         <Typography
           align="center"
           sx={{
@@ -98,8 +96,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
         >
           Tracking ID
         </Typography>
-
-        {/* Tracking ID */}
         <Box
           sx={{
             display: "flex",
@@ -135,8 +131,6 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
             }}
           />
         </Box>
-
-        {/* Summary */}
         <Box
           sx={{
             display: "grid",
@@ -226,7 +220,7 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
             </Typography>
 
             <Chip
-              label={status}
+              label={current_status}
               size="small"
               sx={{
                 backgroundColor: "#fff7ed",
@@ -239,13 +233,10 @@ const TransactionRecipt = ({ packageData, dispatch, setActiveStep, setFormData }
         </Box>
 
         <Divider sx={{ mb: 4 }} />
-
-        {/* Actions */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            // gap: 2,
             flexWrap: "wrap",
             alignItems: "baseline",
           }}

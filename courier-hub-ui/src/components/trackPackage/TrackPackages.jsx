@@ -9,14 +9,12 @@ import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 import TrackingTimeline from "./TrackingTimeline";
 
 const TrackPackages = () => {
-  const [trackingId, setTrackingId] = useState(null);
+  const [trackingId, setTrackingId] = useState('');
   const trackingData = useSelector(
     (state) => state.trackingHistory?.trackingData,
   );
 
   const dispatch = useDispatch();
-
-  console.log("trackingData", trackingData);
 
   useEffect(() => {
     return () => {
@@ -32,7 +30,7 @@ const TrackPackages = () => {
 
     dispatch(
       getTrackingHistory({
-        method: API_CONSTANTS.TRACKING_HISTORY,
+        method: API_CONSTANTS.TRACKING_HISTORY_API,
         trackingId,
       }),
     );
@@ -51,7 +49,7 @@ const TrackPackages = () => {
           borderRadius: 3,
         }}
       >
-        <Box display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" gap={3}>
           <TextField
             label="Tracking ID"
             variant="outlined"

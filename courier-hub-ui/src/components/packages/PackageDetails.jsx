@@ -38,7 +38,7 @@ const PackageDetails = () => {
   useEffect(() => {
     dispatch(
       fetchPackages({
-        method: API_CONSTANTS.GET_PACKAGES,
+        method: API_CONSTANTS.GET_PACKAGES_API,
         body: {
           limit: ROWS_PER_PAGE,
           offset: 0,
@@ -56,7 +56,7 @@ const PackageDetails = () => {
     setPageInput(pageNumber);
     dispatch(
       fetchPackages({
-        method: API_CONSTANTS.GET_PACKAGES,
+        method: API_CONSTANTS.GET_PACKAGES_API,
         body: {
           limit: ROWS_PER_PAGE,
           offset: (pageNumber - 1) * ROWS_PER_PAGE,
@@ -71,7 +71,7 @@ const PackageDetails = () => {
       setPage(pageInput);
       dispatch(
         fetchPackages({
-          method: API_CONSTANTS.GET_PACKAGES,
+          method: API_CONSTANTS.GET_PACKAGES_API,
           body: {
             limit: ROWS_PER_PAGE,
             offset: (pageInput - 1) * ROWS_PER_PAGE,
