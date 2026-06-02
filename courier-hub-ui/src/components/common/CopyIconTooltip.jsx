@@ -1,7 +1,10 @@
 import { Box, Tooltip, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
-const CopyIconTooltip = ({ trackingId }) => {
+const CopyIconTooltip = ({ trackingId, trimTrackingId = true }) => {
+  const getTrackingId = () => {
+    return trimTrackingId ? `${trackingId?.slice(0, 10)}...` : trackingId;
+  };
   return (
     <Tooltip title={trackingId} arrow>
       <Box
@@ -12,7 +15,7 @@ const CopyIconTooltip = ({ trackingId }) => {
           cursor: "pointer",
         }}
       >
-        <Typography variant="body2">{trackingId?.slice(0, 10)}...</Typography>
+        <Typography variant="body2">{getTrackingId()}</Typography>
         <ContentCopyIcon
           fontSize="small"
           onClick={() => {

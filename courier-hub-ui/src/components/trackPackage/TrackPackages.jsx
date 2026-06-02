@@ -39,12 +39,14 @@ const TrackPackages = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
       <Paper
         elevation={3}
         sx={{
           maxWidth: 450,
-          margin: "auto",
           padding: 4,
           borderRadius: 3,
         }}

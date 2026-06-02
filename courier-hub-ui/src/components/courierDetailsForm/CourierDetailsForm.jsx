@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPackage } from "../../store/slices/packageSlice";
 import { API_CONSTANTS } from "../../api/API_CONSTANTS";
 import TransactionRecipt from "./TransactionRecipt";
+import PreviewDetails from "./PreviewDetails";
 
 const CourierDetailsForm = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -163,9 +164,6 @@ const CourierDetailsForm = () => {
               formData={formData}
               onChange={handleChange}
             />
-
-            {/* Charges Summary */}
-
             <Paper
               elevation={0}
               sx={{
@@ -208,163 +206,7 @@ const CourierDetailsForm = () => {
         );
       }
       case 5:
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "24px",
-                fontWeight: 600,
-              }}
-            >
-              Preview Details
-            </Typography>
-
-            <Box
-              sx={{
-                maxHeight: "500px",
-                overflowY: "auto",
-                pr: 1,
-                scrollbarWidth: "thin",
-                scrollbarColor: "#1976d2 transparent",
-
-                "&::-webkit-scrollbar": {
-                  width: "8px",
-                },
-
-                "&::-webkit-scrollbar-track": {
-                  background: "transparent",
-                },
-
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "#1976d2",
-                  borderRadius: "10px",
-                },
-
-                "&::-webkit-scrollbar-thumb:hover": {
-                  backgroundColor: "#1565c0",
-                },
-
-                "&::-webkit-scrollbar-button": {
-                  display: "none",
-                  width: 0,
-                  height: 0,
-                },
-              }}
-            >
-              {/* Sender */}
-              <Box sx={{ mb: 4 }}>
-                <Typography
-                  sx={{
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    mb: 2,
-                  }}
-                >
-                  Sender Information
-                </Typography>
-
-                <Box sx={{ display: "grid", gap: 1 }}>
-                  <Typography>Name: {formData.senderName}</Typography>
-                  <Typography>Phone: {formData.senderPhone}</Typography>
-                  <Typography>Address: {formData.senderAddress}</Typography>
-                  <Typography>State: {formData.senderState}</Typography>
-                  <Typography>City: {formData.senderCity}</Typography>
-                  <Typography>Pincode: {formData.senderPincode}</Typography>
-                </Box>
-              </Box>
-
-              {/* Receiver */}
-              <Box sx={{ mb: 4 }}>
-                <Typography
-                  sx={{
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    mb: 2,
-                  }}
-                >
-                  Receiver Information
-                </Typography>
-
-                <Box sx={{ display: "grid", gap: 1 }}>
-                  <Typography>Name: {formData.receiverName}</Typography>
-                  <Typography>Phone: {formData.receiverPhone}</Typography>
-                  <Typography>Address: {formData.receiverAddress}</Typography>
-                  <Typography>State: {formData.receiverState}</Typography>
-                  <Typography>City: {formData.receiverCity}</Typography>
-                  <Typography>Pincode: {formData.receiverPincode}</Typography>
-                </Box>
-              </Box>
-
-              {/* Package */}
-              <Box sx={{ mb: 4 }}>
-                <Typography
-                  sx={{
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    mb: 2,
-                  }}
-                >
-                  Package Details
-                </Typography>
-
-                <Box sx={{ display: "grid", gap: 1 }}>
-                  <Typography>Weight: {formData.weight} kg</Typography>
-
-                  <Typography>Region: {formData.region}</Typography>
-
-                  <Typography>Package Type: {formData.packageType}</Typography>
-                </Box>
-              </Box>
-
-              {/* Billing */}
-              <Box>
-                <Typography
-                  sx={{
-                    fontSize: "18px",
-                    fontWeight: 600,
-                    mb: 2,
-                  }}
-                >
-                  Billing Details
-                </Typography>
-
-                <Box sx={{ display: "grid", gap: 1 }}>
-                  <Typography>Billing Name: {formData.billingName}</Typography>
-
-                  <Typography>
-                    Billing Address: {formData.billingAddress}
-                  </Typography>
-
-                  <Typography>Payment Mode: {formData.paymentMode}</Typography>
-
-                  <Typography>
-                    Shipping Charges: ₹{formData.shippingCharges}
-                  </Typography>
-
-                  <Typography>
-                    Package Charges: ₹{formData.packageCharges}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: "18px",
-                    }}
-                  >
-                    Total Amount: ₹{formData.totalAmount}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        );
-
+        return <PreviewDetails formData={formData} />;
       default:
         return null;
     }
@@ -403,8 +245,9 @@ const CourierDetailsForm = () => {
       >
         <Typography
           sx={{
-            fontSize: "28px",
+            fontSize: "20px",
             fontWeight: 700,
+            color: '#1976d2'
           }}
         >
           Create Courier

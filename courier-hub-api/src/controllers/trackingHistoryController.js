@@ -101,6 +101,8 @@ export const getTrackingHistoryById = async (req, res, next) => {
         weight: packageData.weight,
         senderCity: packageData.sender_city,
         receiverCity: packageData.receiver_city,
+        currentRegion: packageData.region,
+        bagId: packageData.bag_id,
         updatedAt: packageData.updated_at,
       },
       history: trackingHistory || [],

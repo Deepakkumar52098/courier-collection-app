@@ -164,3 +164,25 @@ export const billingFields = [
     ],
   },
 ];
+
+export const paymentDetails = [
+  {
+    label: "Shipping Charges",
+    key: "shippingCharges",
+  },
+  {
+    label: "Package Charges",
+    key: "packageCharges",
+  },
+  {
+    label: "Total Amount",
+    key: "totalAmount",
+  },
+];
+
+export const allFields = [
+  { title: "Sender Information", fields: [...senderFields] },
+  { title: "Receiver Information", fields: [...receiverFields] },
+  { title: "Package Details", fields: [...packageFields] },
+  { title: "Billing Details", fields: [...billingFields, ...paymentDetails] },
+];
